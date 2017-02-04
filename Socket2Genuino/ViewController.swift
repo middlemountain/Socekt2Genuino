@@ -89,7 +89,13 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralMa
     //  スキャン結果を取得
     func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
         self.peripheral = peripheral
+        
+        print(peripheral.name!)
+        if peripheral.name! == "GENUINO 101-C123" {
         self.centralManager.connect(self.peripheral, options: nil)
+            centralManager.stopScan()
+        }
+        
     }
 
     
@@ -215,15 +221,14 @@ class ViewController: UIViewController, CBCentralManagerDelegate, CBPeripheralMa
     
     
     // 書き込み結果の受信
-    func peripheral(peripheral: CBPeripheral,
-                    didWriteValueForCharacteristic characteristic: CBCharacteristic,
-                    error: NSError?)
+    func peripheral(_ peripheral: CBPeripheral,
+                    didWriteValueFor characteristic: CBCharacteristic,
+                    error: Error?)
     {
         if let error = error {
             print("Write失敗...error: \(error)")
             return
         }
-        
         print("Write成功！")
     }
 
